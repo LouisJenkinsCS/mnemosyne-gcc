@@ -1146,7 +1146,6 @@ static int ms_ascii_process_line(ms_conn_t *c, char *command)
   char *buffer= command;
 
   assert(c != NULL);
-
   /**
    * for command get, we store the returned value into local buffer
    * then continue in ms_complete_nread().
@@ -1158,9 +1157,9 @@ static int ms_ascii_process_line(ms_conn_t *c, char *command)
     if (buffer[1] == 'A')       /* VALUE */
     {
       token_t tokens[MAX_TOKENS];
-      ms_tokenize_command(command, tokens, MAX_TOKENS);
-      value_len= strtol(tokens[VALUELEN_TOKEN].value, NULL, 10);
-      c->currcmd.key_prefix= *(uint64_t *)tokens[KEY_TOKEN].value;
+      int x = ms_tokenize_command(command, tokens, MAX_TOKENS);
+      value_len= x<=VALUELEN_TOKEN?0:strtol(tokens[VALUELEN_TOKEN].value, NULL, 10);
+      c->currcmd.key_prefix= x<=VALUELEN_TOKEN?0:*(uint64_t *)tokens[KEY_TOKEN].value;
 
       /*
        *  We read the \r\n into the string since not doing so is more

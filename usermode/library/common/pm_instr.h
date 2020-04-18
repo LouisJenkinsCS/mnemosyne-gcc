@@ -136,7 +136,6 @@
 #define TENTRY_ID (int)0
 #define pm_trace_print(format, args ...)					\
 {										\
-	__pm_trace_print(format, args);						\
 }
 #endif
 
